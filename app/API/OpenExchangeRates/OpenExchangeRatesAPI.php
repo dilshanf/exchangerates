@@ -16,34 +16,35 @@ class OpenExchangeRatesAPI
 
     public function __construct() {
       $this->client = new Client();
-      $this->appId = Config::get('open_exchange_rates.key');
+      $this->appId = Config::get('services.open_exchange_rates.key');
     }
 
     public function currencies() {
       return $this->request('GET', self::BASE_URL . '/currencies.json'); 
     }
 
-    public function latest() {
-      $data['form_params'] = [ 'app_id' => $this->appId ];
-      return $this->request('GET', self::BASE_URL . '/latest.json', $data);     
+    public function latest($symbols = null) {
+      $sym = $symbols === null ? '' : $symbols;
+      $url = self::BASE_URL . '/latest.json' . '?app_id=' . $this->appId . '&symbols=' . $sym;
+      $response = $this->request('GET', $url);
+
+      return isset($response['rates']) && is_array($response['rates']) ? $response['rates'] : null;
     }
     
-    public function timeseries($start, $end, $symbols) {
-      $data['form_params'] = [ 
-        'app_id' => $this->appId,
-        'start' => $start,
-        'end' => $end,
-        'symbols' => $symbols,
-      ];
-      return $this->request('GET', self::BASE_URL . '/latest.json', $data);  
+    public function timeseries($start, $end, $symbols = null) {
+      $sym = $symbols === null ? '' : $symbols;
+      $url = self::BASE_URL . '/latest.json' . '?app_id=' . $this->appId . '&start=' . $start . '&end=' . $end . '&symbols=' . $sym;
+
+      return $this->request('GET', self::BASE_URL . '/time-series.json');  
     }
 
-    private function request($method, $url, $data = []) {
+    private function request($method, $url) {
       $jsonData = null;
       try {
-        $response = $this->client->request($method, $url, $data);
+        $data['headers']['Accept'] = 'application/json';
+        $response = $this->client->request($method, $url);
         $body = $response->getBody()->getContents();
-        $jsonData = json_decode($body);
+        $jsonData = json_decode($body, true);
       } catch (GuzzleException $e) {
         $resCode = $e->getCode();
         if ($resCode === '400') {

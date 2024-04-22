@@ -32,7 +32,8 @@ return [
     ],
 
     'open_exchange_rates' => [
-      'key' => env('OPEN_EX_RATES_KEY')
+      'key' => env('OPEN_EX_RATES_KEY'),
+      'list' => env('OPEN_EX_RATES_LIST')
     ],
 
 ];
