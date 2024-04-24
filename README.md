@@ -21,5 +21,8 @@
 ````php artisan rates:update````
 10. Navigate to http://localhost:8080/rates?date=2024-04-24
 
-11. Run api test command (optional)
+11. Run daily csv file
+```` php artisan rates:eod_email ````
+
+12. Run api test command (optional)
 ```` composer test ````

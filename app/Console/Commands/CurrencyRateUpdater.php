@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\API\OpenExchangeRates\OpenExchangeRatesAPI;
+use App\Events\CurrencyRatesUpdated;
 use App\Jobs\UpdateCurrencyRatesJob;
 use App\Models\Currency;
 use Illuminate\Console\Command;
@@ -23,7 +24,6 @@ class CurrencyRateUpdater extends Command
       $this->api = new OpenExchangeRatesAPI();
 
       $ccyData = $this->api->latest($symbols);
-
       foreach ($ccyData as $ccy => $rate) {
 
         if (is_string($ccy) && strlen($ccy) >= 1 && strlen($ccy) <= 3) {
@@ -32,7 +32,7 @@ class CurrencyRateUpdater extends Command
 
           if ($ccyRec !== null) {
 
-            $key = [ 'id' => $ccyRec->id, 'date' => now() ];
+            $key = [ 'id' => $ccyRec->id, 'date' => date('Y-m-d') ];
             $data = [ 'rate' => $rate ];
 
             dispatch(new UpdateCurrencyRatesJob($key, $data));
@@ -43,5 +43,7 @@ class CurrencyRateUpdater extends Command
           Log::error('Invalid currency code: ' . $ccy);
         }
       }
+      
+      event(new CurrencyRatesUpdated());
     }
 }

@@ -36,6 +36,6 @@ class CurrencyUpdater extends Command
         }
       }
 
-      event(new CurrencyUpdated(count($ccyData)));
+      event(new CurrencyUpdated());
     }
 }
