@@ -4,18 +4,17 @@
 1. Clone git repository
 2. Run
 ````composer install````
-3. Run
 ````php artisan key:generate````
-4. Copy .env.example to .env and change the database connection (if needed)
-5. Add openexchangerates API key to .env parameter OPEN_EX_RATES_KEY
-6. Create new database (exchange_rates) as in .env file
-7. Run
+3. Copy .env.example to .env and change the database connection (if needed)
+4. Add openexchangerates API key to .env parameter OPEN_EX_RATES_KEY
+5. Create new database (exchange_rates) as in .env file
+6. Run the database migration
 ````php artisan migrate````
-8. Run the application and background queue worker
+7. Run the application and background queue worker
 ````php artisan serve````
 ````php artisan queue:work````
-9. Run get currencies command 
+8. Run get currencies command 
 ````php artisan currency:update````
-10. Run get rates command
+9. Run get rates command
 ````php artisan rates:update````
-11. Navigate to http://localhost:8080/rates/2024-04-23
+10. Navigate to http://localhost:8080/rates?date=2024-04-24

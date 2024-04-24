@@ -11,6 +11,12 @@
     <div class='container'>
       <h1>Exchange Rates</h1>
 
+      @if(isset($error) && $error != '')
+        <div class="alert alert-danger">
+          {{ $error }}
+        </div>
+      @endif
+
       @yield('content')
     
     </div>
