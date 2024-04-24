@@ -5,7 +5,6 @@ namespace App\Console\Commands;
 use App\API\OpenExchangeRates\OpenExchangeRatesAPI;
 use App\Jobs\UpdateCurrencyRatesJob;
 use App\Models\Currency;
-use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Log;
@@ -25,9 +24,6 @@ class CurrencyRateUpdater extends Command
 
       $ccyData = $this->api->latest($symbols);
 
-      $today = Carbon::now();
-      $tod = $today->format('Y-m-d');
-
       foreach ($ccyData as $ccy => $rate) {
 
         if (is_string($ccy) && strlen($ccy) >= 1 && strlen($ccy) <= 3) {
@@ -36,7 +32,7 @@ class CurrencyRateUpdater extends Command
 
           if ($ccyRec !== null) {
 
-            $key = [ 'id' => $ccyRec->id, 'date' => $tod ];
+            $key = [ 'id' => $ccyRec->id, 'date' => now() ];
             $data = [ 'rate' => $rate ];
 
             dispatch(new UpdateCurrencyRatesJob($key, $data));
@@ -44,7 +40,7 @@ class CurrencyRateUpdater extends Command
             Log::error('Currency code not found in DB. Code: ' . $ccy);
           }
         } else {
-          Log::error('Invalid CCY code: ' . $ccy);
+          Log::error('Invalid currency code: ' . $ccy);
         }
       }
     }

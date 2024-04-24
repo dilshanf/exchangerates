@@ -18,3 +18,6 @@
 9. Run get rates command
 ````php artisan rates:update````
 10. Navigate to http://localhost:8080/rates?date=2024-04-24
+
+11. Run api test command
+```` composer test ````
