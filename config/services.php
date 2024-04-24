@@ -36,4 +36,7 @@ return [
       'list' => env('OPEN_EX_RATES_LIST')
     ],
 
+    'notification_emails' => [
+      'api' => env('API_NOTIFICATION_EMAIL')
+    ],
 ];

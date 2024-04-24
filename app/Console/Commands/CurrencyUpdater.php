@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\API\OpenExchangeRates\OpenExchangeRatesAPI;
+use App\Events\CurrencyUpdated;
 use App\Jobs\UpdateCurrencyJob;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
@@ -29,9 +30,12 @@ class CurrencyUpdater extends Command
           $data = [ 'name' => $ccyName ];
 
           dispatch(new UpdateCurrencyJob($key, $data));
+
         } else {
           Log::error('Invalid CCY code: ' . $ccy);
         }
       }
+
+      event(new CurrencyUpdated(count($ccyData)));
     }
 }
