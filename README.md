@@ -5,7 +5,7 @@
 2. Run
 ````composer install````
 ````php artisan key:generate````
-3. Copy .env.example to .env and change the database and email connection (optional)
+3. Copy .env.example to .env and change the database and email connection
 4. Add the following variables to .env file
   OPEN_EX_RATES_KEY (API key)
   API_NOTIFICATION_EMAIL (email address for notifications)
